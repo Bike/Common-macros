@@ -1,37 +1,16 @@
 (cl:in-package #:common-macro-definitions)
 
-;;; Check that the binding var is a symbol.
-(defun binding-var-must-be-symbol (binding-var)
-  (unless (symbolp binding-var)
-    (error 'malformed-binding-var
-           :datum binding-var)))
-
-;;; Check that the list-form is a list
-;;; FIXME: signal a warning if list-form is not a proper-list
-(defun list-form-must-be-list (list-form)
-  (unless (or (listp list-form) (symbolp list-form))
-    (error 'malformed-list-form
-           :datum list-form)))
-
-;;; Check that the count form is a positive integer.
-(defun count-form-must-be-nonnegative-integer (count-form)
-  (unless (or (and (numberp count-form)
-                   (not (minusp count-form)))
-              (not (constantp count-form)))
-    (error 'malformed-count-form
-           :datum count-form)))
-
 ;;; Check that iteration body is a proper list.
 (defun body-must-be-proper-list (body)
   (unless (ecc:proper-list-p body)
     (error 'malformed-body
-           :datum body)))
+           :body body)))
 
 (defun check-variable-clauses (variable-clauses)
   (unless (ecc:proper-list-p variable-clauses)
     (error 'malformed-variable-clauses
-           :datum variable-clauses))
-  (mapcar
+           :clauses variable-clauses))
+  (mapc
    (lambda (clause)
      (unless (or (symbolp clause)
                  (and (consp clause)

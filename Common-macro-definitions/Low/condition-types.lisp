@@ -23,25 +23,61 @@
                      (clauses condition)))))
 
 (define-condition malformed-cond-clause (program-error)
-  ((%clause :initarg :clause :reader clause)))
+  ((%clause :initarg :clause :reader clause))
+  (:report (lambda (condition stream)
+             (format stream
+                     "Expected a cond clause (test-form form*),~@
+                      but the following was given instead:~@
+                      ~s"
+                     (clause condition)))))
 
 (define-condition malformed-case-clauses (program-error)
-  ((%clauses :initarg :clauses :reader clauses)))
+  ((%clauses :initarg :clauses :reader clauses))
+  (:report (lambda (condition stream)
+             (format stream "Expected a proper list of case clauses,~@
+                             but the following was given instead:~@
+                             ~s"
+                     (clauses condition)))))
 
 (define-condition malformed-case-clause (program-error)
-  ((%clause :initarg :clause :reader clause)))
+  ((%clause :initarg :clause :reader clause))
+  (:report (lambda (condition stream)
+             (format stream "Expected a case clause of the form (keys form*),~@
+                             but the following was given instead:~@
+                             ~s"
+                     (clause condition)))))
 
 (define-condition otherwise-clause-not-last (program-error)
-  ((%clauses :initarg :clauses :reader clauses)))
+  ((%clauses :initarg :clauses :reader clauses))
+  (:report (lambda (condition stream)
+             (format stream "Expected ~s clause to be last,~@
+                             but the following clauses were given after it:~@
+                             ~s"
+                     'otherwise (clauses condition)))))
 
 (define-condition malformed-keys (program-error)
-  ((%keys :initarg :keys :reader keys)))
+  ((%keys :initarg :keys :reader keys))
+  (:report (lambda (condition stream)
+             (format stream "Expected a proper list of case keys,~@
+                             but the following was given instead:~@
+                             ~s"
+                     (keys condition)))))
 
 (define-condition malformed-typecase-clauses (program-error)
-  ((%clauses :initarg :clauses :reader clauses)))
+  ((%clauses :initarg :clauses :reader clauses))
+  (:report (lambda (condition stream)
+             (format stream "Expected a proper list of typecase clauses,~@
+                             but the following was given instead:~@
+                             ~s"
+                     (clauses condition)))))
 
 (define-condition malformed-typecase-clause (program-error)
-  ((%clause :initarg :clause :reader clause)))
+  ((%clause :initarg :clause :reader clause))
+  (:report (lambda (condition stream)
+             (format stream "Expected a typecase clause of the form (type form*),~@
+                             but the following was given instead:~@
+                             ~s"
+                     (clause condition)))))
 
 (define-condition variable-name-must-be-symbol (program-error)
   ((%name :initarg :name :reader name))
@@ -56,7 +92,28 @@
     (error 'variable-name-must-be-symbol :name variable-name)))
 
 (define-condition malformed-handler-case-clause (program-error)
-  ((%clause :initarg :clause :reader clause)))
+  ((%clause :initarg :clause :reader clause))
+  (:report (lambda (condition stream)
+             (format stream "Expected a ~s clause of the form (typespec ([var]) . body),~@
+                             but the following was given instead:~@
+                             ~s"
+                     'handler-case (clause condition)))))
+
+(define-condition malformed-variable-clause (program-error)
+  ((%clause :initarg :clause :reader clause))
+  (:report (lambda (condition stream)
+             (format stream "Expected a symbol, or a clause (symbol [init-form [step-form]],~@
+                             but the following was given instead:~@
+                             ~s"
+                     (clause condition)))))
+
+(define-condition malformed-variable-clauses (program-error)
+  ((%clauses :initarg :clauses :reader clauses))
+  (:report (lambda (condition stream)
+             (format stream "Expected a proper list of variable clauses,~@
+                             but the following was given instead:~@
+                             ~s"
+                     (clauses condition)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
