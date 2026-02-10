@@ -1,6 +1,8 @@
 (cl:in-package #:common-macro-definitions)
 
 (defmacro cond (&body clauses)
+  (unless (ecc:proper-list-p clauses)
+    (error 'malformed-cond-clauses :clauses clauses))
   (labels ((aux (clauses)
              (if (null clauses)
                  nil

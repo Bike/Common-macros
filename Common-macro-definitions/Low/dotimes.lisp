@@ -6,8 +6,7 @@
 
 (defmacro dotimes ((var count-form &optional result-form) &body body)
   ;; do some syntax checking
-  (binding-var-must-be-symbol var)
-  (count-form-must-be-nonnegative-integer count-form)
+  (check-variable-name var)
   (body-must-be-proper-list body)
   (multiple-value-bind (declarations forms)
       (ecc:separate-ordinary-body body)
@@ -21,7 +20,7 @@
          (block nil
            (tagbody
               ,start-tag
-              (when (= ,var ,count-var)
+              (when (>= ,var ,count-var)
                 (go ,end-tag))
               (tagbody ,@forms)
               (incf ,var)
