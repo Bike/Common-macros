@@ -11,4 +11,4 @@
              ,writer-form)
            (error 'type-error
                   :expected-type 'list
-                  :datum ',(car store-vars))))))
+                  :datum ,(car store-vars))))))
