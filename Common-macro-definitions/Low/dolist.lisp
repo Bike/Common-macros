@@ -16,8 +16,7 @@
 
 (defmacro dolist ((var list-form &optional result-form) &body body)
   ;; Do some syntax checking.
-  (binding-var-must-be-symbol var)
-  (list-form-must-be-list list-form)
+  (check-variable-name var)
   (body-must-be-proper-list body)
   (multiple-value-bind (declarations forms)
       (ecc:separate-ordinary-body body)
